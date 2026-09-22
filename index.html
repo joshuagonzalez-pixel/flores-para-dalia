@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Dalia 🌸</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:Georgia,"Times New Roman",serif;background:radial-gradient(circle at 50% 42%,#fffafd,#f8dce9 48%,#d99ab8);color:#702b4a}
+.scene{position:relative;width:100%;height:100%;overflow:hidden}
+.glow{position:absolute;width:55vmin;height:55vmin;left:50%;top:43%;transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.45);filter:blur(35px);animation:breathe 5s ease-in-out infinite}
+.message{position:absolute;z-index:20;width:90%;left:50%;top:9%;transform:translateX(-50%);text-align:center;animation:appear 2s ease-out both}
+.message h1{margin:0;font-size:clamp(2.5rem,8vw,5.7rem);font-weight:400;letter-spacing:.04em}
+.message p{margin:8px 0;font-size:clamp(1rem,2.8vw,1.35rem);letter-spacing:.06em}
+.garden{position:absolute;left:50%;bottom:-2vh;width:min(720px,100vw);height:76vh;transform:translateX(-50%)}
+.stem{position:absolute;bottom:0;width:5px;background:linear-gradient(to right,#426d40,#79a85f,#365e37);border-radius:99px;transform-origin:bottom center;animation:sway 5s ease-in-out infinite}
+.leaf{position:absolute;width:85px;height:38px;background:linear-gradient(135deg,#5d954e,#9bc56e);border-radius:100% 0 100% 0;transform-origin:bottom left;animation:leafGrow 2.4s ease-out both}
+.flower{position:absolute;width:150px;height:150px;left:50%;top:0;transform:translate(-50%,-50%) scale(0);animation:bloom 2.2s cubic-bezier(.2,.8,.2,1) forwards,float 4s ease-in-out 2.2s infinite}
+.petal{position:absolute;left:50%;top:50%;width:38px;height:72px;margin:-36px -19px;border-radius:50%;background:linear-gradient(145deg,#f8a7c6,#b93671);transform-origin:50% 100%;opacity:0;animation:petalAppear .8s ease-out forwards}
+.petal.inner{width:28px;height:53px;margin:-27px -14px;background:linear-gradient(145deg,#ffd0df,#e15b91)}
+.center{position:absolute;left:50%;top:50%;width:38px;height:38px;transform:translate(-50%,-50%) scale(0);border-radius:50%;background:radial-gradient(circle,#fff2a6 0 18%,#e5a43c 20% 48%,#a86a27 50%);box-shadow:0 0 15px rgba(255,205,83,.55);animation:centerBloom .7s ease-out 1.35s forwards}
+.heart{position:absolute;color:rgba(159,40,91,.28);font-size:24px;animation:rise linear infinite;z-index:5}
+.hint{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);z-index:30;font-size:.82rem;letter-spacing:.1em;opacity:.65;text-align:center;width:90%}
+@keyframes appear{from{opacity:0;transform:translate(-50%,-15px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes breathe{0%,100%{transform:translate(-50%,-50%) scale(.9);opacity:.5}50%{transform:translate(-50%,-50%) scale(1.08);opacity:.8}}
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg)}}
+@keyframes leafGrow{from{transform:scale(0) rotate(18deg);opacity:0}to{transform:scale(1) rotate(18deg);opacity:1}}
+@keyframes bloom{0%{transform:translate(-50%,-50%) scale(0)}70%{transform:translate(-50%,-50%) scale(1.08)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes petalAppear{from{opacity:0}to{opacity:1}}
+@keyframes centerBloom{to{transform:translate(-50%,-50%) scale(1)}}
+@keyframes float{0%,100%{margin-top:0;rotate:-2deg}50%{margin-top:-7px;rotate:2deg}}
+@keyframes rise{from{transform:translateY(15vh) scale(.7);opacity:0}15%{opacity:.8}100%{transform:translateY(-105vh) scale(1.2);opacity:0}}
+@media(max-width:600px){.garden{height:67vh}.flower{scale:.78}.leaf{scale:.75}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<div class="scene">
+<div class="glow"></div>
+<div class="message"><h1>Para Dalia</h1><p>Porque algunas flores merecen crecer despacio y ser admiradas. 🌸</p></div>
+<div class="garden" id="garden"></div><div id="hearts"></div>
+<div class="hint">Una pequeña flor, creciendo para ti.</div>
+</div>
+<script>
+const garden=document.getElementById("garden");
+function createFlower(x,h,scale,delay){
+ const stem=document.createElement("div"); stem.className="stem"; stem.style.left=x+"%"; stem.style.height=h+"px"; stem.style.animationDelay=delay+"s"; garden.appendChild(stem);
+ for(const side of [-1,1]){
+   const leaf=document.createElement("div"); leaf.className="leaf"; leaf.style[side<0?"left":"right"]="-70px"; leaf.style.bottom=(h*(side<0?.38:.55))+"px"; leaf.style.transform=side<0?"rotate(18deg)":"scaleX(-1) rotate(20deg)"; leaf.style.animationDelay=(delay+.6)+"s"; stem.appendChild(leaf);
+ }
+ const flower=document.createElement("div"); flower.className="flower"; flower.style.animationDelay=(delay+1.2)+"s"; flower.style.scale=scale;
+ for(let ring=0;ring<2;ring++){
+  const count=ring===0?18:12;
+  for(let i=0;i<count;i++){
+   const p=document.createElement("div"); p.className="petal"+(ring?" inner":""); p.style.transform=`rotate(${360/count*i+(ring?15:0)}deg) translateY(-${ring?24:42}px)`; p.style.animationDelay=(delay+1.35+i*.025)+"s"; flower.appendChild(p);
+  }
+ }
+ const c=document.createElement("div"); c.className="center"; c.style.animationDelay=(delay+1.65)+"s"; flower.appendChild(c); stem.appendChild(flower);
+}
+[[17,285,.55,.2],[31,355,.72,1.1],[48,430,1,.4],[67,350,.72,1.5],[82,275,.52,.8]].forEach(v=>createFlower(...v));
+const hearts=document.getElementById("hearts");
+for(let i=0;i<18;i++){const h=document.createElement("div");h.className="heart";h.textContent="♥";h.style.left=Math.random()*100+"%";h.style.bottom=(-10-Math.random()*20)+"vh";h.style.animationDuration=7+Math.random()*7+"s";h.style.animationDelay=-Math.random()*12+"s";h.style.fontSize=12+Math.random()*22+"px";hearts.appendChild(h)}
+</script>
+</body>
+</html>
